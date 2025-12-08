@@ -184,7 +184,7 @@ link: "{link}"
             except requests.RequestException:
                 pass
             
-            data = {"message": f"Update site: {relative_path}", "content": content_b64, "branch": "gh-pages"}
+            data = {"message": f"Update site: {relative_path} [ci skip]", "content": content_b64, "branch": "gh-pages"}
             if sha:
                 data["sha"] = sha
 
