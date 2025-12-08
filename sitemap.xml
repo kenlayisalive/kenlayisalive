@@ -1,3 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><sitemap><loc>https://kenlayisalive.org/post-sitemap.xml</loc><lastmod>2025-12-08T21:44:52.637500+00:00</lastmod></sitemap><sitemap><loc>https://kenlayisalive.org/sitemap-1765230291.xml</loc><lastmod>2025-12-08T21:44:52.637528+00:00</lastmod></sitemap></sitemapindex>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://kenlayisalive.org/post-sitemap.xml</loc>
+  </sitemap>
+</sitemapindex>
