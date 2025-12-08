@@ -1,5 +1,5 @@
 baseURL = "https://kenlayisalive.org/"
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = 'Kenlay is Alive'
 
 theme = "ananke"
