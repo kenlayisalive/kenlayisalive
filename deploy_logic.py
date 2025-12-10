@@ -97,10 +97,15 @@ link: "{link}"
         config_file = hugo_site_path / "hugo.toml"
 
         if not hugo_site_path.is_dir():
-            self._run_command(f'new site "{hugo_site_path.name}"", "Failed to create new Hugo site.", is_hugo_command=True)
-            
+            self._run_command(
+                ['hugo', 'new', 'site', hugo_site_path.name],
+                "Failed to create new Hugo site.",
+                is_hugo_command=True
+            )
+
         ananke_theme_path = hugo_site_path / "themes" / "ananke"
-        
+
+      
         if ananke_theme_path.is_dir():
             self.status_callback("Ananke theme found. Updating...")
             self._run_command('git pull', "Failed to update Ananke theme.", cwd=ananke_theme_path)
@@ -119,7 +124,7 @@ link: "{link}"
 
         base_url_value = f"https://{self.domain}/"
         if re.search(r'baseURL\s*=', config_content):
-            config_content = re.sub(r'baseURL\s*=\s*["\'].*?["\']', f'baseURL = "{base_url_value}"', config_content)
+            config_content = re.sub(r'baseURL\s*=\s*["\"].*?["\"]', f'baseURL = "{base_url_value}"', config_content)
         else:
             config_content += f'\nbaseURL = "{base_url_value}"\n'
             
@@ -132,11 +137,38 @@ link: "{link}"
         layout_path = hugo_site_path / "layouts" / "index.html"
         layout_path.parent.mkdir(parents=True, exist_ok=True)
         if not layout_path.exists():
-            layout_path.write_text("<!DOCTYPE html>
-<html><head><title>{{ .Site.Title }}</title><style>body { font-family: sans-serif; line-height: 1.6; margin: 2em; } ul { list-style-type: none; padding: 0; } li { margin-bottom: 1.5em; } a { text-decoration: none; color: #0056b3; } a:hover { text-decoration: underline; }</style></head>
-<body><h1>Welcome to {{ .Site.Title }}</h1><h2>Latest News</h2><ul>{{ range .Site.RegularPages.ByDate.Reverse | first 20 }}<li><h3><a href=\"{{ .Permalink }}\" >{{ .Title }}</a></h3><p>{{ .Summary }} <a href=\"{{ .Permalink }}">Read more...</a></p></li>{{ end }}</ul></body></html>", encoding="utf-8")
-            
-hugo_posts_dir = hugo_site_path / "content" / "posts"
+            layout_path.write_text(
+                                    """<!DOCTYPE html>
+                                <html lang="en">
+                                <head>
+                                    <meta charset="utf-8">
+                                    <title>{{ .Site.Title }}</title>
+                                    <style>
+                                        body { font-family: sans-serif; line-height: 1.6; margin: 2em; }
+                                        ul { list-style-type: none; padding: 0; }
+                                        li { margin-bottom: 1.5em; }
+                                        a { text-decoration: none; color: #0056b3; }
+                                        a:hover { text-decoration: underline; }
+                                    </style>
+                                </head>
+                                <body>
+                                    <main>
+                                        <h1>Welcome to {{ .Site.Title }}</h1>
+                                        <h2>Latest News</h2>
+                                        <ul>
+                                            {{ range .Site.RegularPages.ByDate.Reverse | first 20 }}
+                                            <li>
+                                                <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+                                                <p>{{ .Summary }} <a href="{{ .Permalink }}">Read more...</a></p>
+                                            </li>
+                                            {{ end }}
+                                        </ul>
+                                    </main>
+                                </body>
+                                </html>""",
+                                    encoding="utf-8"
+                                )
+        hugo_posts_dir = hugo_site_path / "content" / "posts"
         if hugo_posts_dir.exists():
             shutil.rmtree(hugo_posts_dir)
         shutil.copytree("content/posts", hugo_posts_dir)
